@@ -388,6 +388,8 @@ def plot_vrbls_distribution(shape, spu_params, spd_params):
         plt.show()
 
 
+# Plot and compare VRBL distributions and statistics between raw and balanced inputs
+# for different numbers of ones per column across weight patterns.
 def plot_vrbls_distribution_raw_vs_balanced(shape, spu_params, spd_params):
     #input_matrix_raw = np.ones(shape)
     input_matrix_raw = np.random.choice([1, 0, -1], size=shape)
@@ -465,7 +467,11 @@ def plot_vrbls_distribution_raw_vs_balanced(shape, spu_params, spd_params):
         plt.tight_layout()
         plt.show()
 
-
+# Compare analog output (VRBL) distributions for:
+# 1. Ideal true hardware with no variation
+# 2. Raw outputs with variation
+# 3. Corrected outputs (using learned X factor for compensation)
+# Plot the distributions and print a detailed correction summary.
 def plot_vrbls_distribution_ideal_true_vs_corrected(shape, spu_params, spd_params, spu_params_ideal_true, spd_params_ideal_true, vdd=1.0):
     input_matrix = np.ones(shape)
     vrbls_ideal_true_outputs = {}
@@ -591,8 +597,11 @@ def plot_vrbls_distribution_ideal_true_vs_corrected(shape, spu_params, spd_param
     print(f"{'Total':>10} | {total_before_error:>12.6f} | {total_corrected_error:>14.6f} | {total_improvement:>12.6f} | {total_percent:>9.2f}%")
 
 
-
-
+# Generate a 2x mirrored version of the given weight matrix:
+# - Top left: original
+# - Top right: flipped horizontally
+# - Bottom left: flipped vertically
+# - Bottom right: flipped both vertically and horizontally
 def generate_mirrored_matrix(weight_matrix):
     w = weight_matrix
     w_r = np.fliplr(w)
@@ -602,11 +611,18 @@ def generate_mirrored_matrix(weight_matrix):
     bottom = np.hstack([w_d, w_rd])
     return np.vstack([top, bottom])
 
+# Compute the symmetric average of VRBL outputs from a mirrored matrix.
+# Averages values from opposite ends of each column (index i and 63 - i).
 def compute_mirrored_avg_vrbls(vrbls_big):
     vrbls_big = vrbls_big.flatten()
     # Average across symmetric outputs (i + 63 - i)/4 → for i in 0 to 31
     return np.array([(vrbls_big[i] + vrbls_big[63 - i]) / 2.0 for i in range(32)])
 
+
+# Compare raw, raw corrected, mirrored averaged, and mirrored corrected VRBLs
+# against an ideal setup with no variation. This is done across varying numbers
+# of ones per column.
+# Outputs include boxplots, line plots of mean/std/MAE, and summary of improvements.
 def plot_raw_vs_mirrored_distribution(w_shape, spu_params, spd_params,
                                       spu_params_no_variation, spd_params_no_variation, X, vdd=1.0):
     input_matrix_w = np.ones(w_shape)
@@ -796,7 +812,8 @@ def plot_raw_vs_mirrored_distribution(w_shape, spu_params, spd_params,
     print(f"Corrected MAE: {corrected_mae_np[max_mae_idx]:.6e}")
     print(f"Improvement: {mae_improvement_pct[max_mae_idx]:.2f}%")
 
-
+# Learn the effective mismatch ratio X = (vdd/vrbl - 1) averaged over all cells
+# using an alternating weight matrix (+1/-1 rows) and input=1
 def learning_X(shape, spu_params, spd_params, vdd=1.0):
     input_matrix = np.ones(shape)
     weights = np.empty(shape, dtype=int)
@@ -807,11 +824,16 @@ def learning_X(shape, spu_params, spd_params, vdd=1.0):
 
     return X
 
+# Apply correction to raw VRBLs using learned mismatch factor X
+# Based on: VRBL_corrected = Vdd / (1 + (Vdd / VRBL_raw - 1) / X)
 def correct_vrbls(vrbls_raw, X, vdd=1):
     correction_factor = (vdd / vrbls_raw - 1) / X
     vrbls_corrected = vdd / (1 + correction_factor)
     return vrbls_corrected
 
+# Run simulation sweep across a range of gradient strengths
+# Compare how VRBL error changes with and without balanced input redistribution
+# Plots error vs gradient percentage for raw and balanced inputs
 def run_gradient_sweep_summary(shape, base_spu, base_spd, no_var_spu, no_var_spd, gradient_range):
     vrbl_diff_raw_list = []
     vrbl_diff_balanced_list = []
