@@ -40,5 +40,3 @@ To execute a specific analysis (e.g., raw vs mirrored distribution, VRBL distrib
 Run the project with:  
 ```bash
 python simulator.py
-
----
