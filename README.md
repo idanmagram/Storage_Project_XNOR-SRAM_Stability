@@ -27,8 +27,18 @@
 This project uses the following Python libraries:
 - **numpy**
 - **matplotlib**
-- **collections** (Python standard library)
-## How to run  
-The entry point of the project is the main() function defined in the analysis script.
-It sets up SPU/SPD parameters, runs VRBL simulations, and performs gradient sweeps.
+- **collections**
+  
+## How to Run  
+
+The entry point of the project is the `main()` function defined in the analysis script.  
+It sets up SPU/SPD parameters, runs VRBL simulations, and performs gradient sweeps.  
+
+Several plotting and analysis functions are included in the script but are commented out by default.  
+To execute a specific analysis (e.g., raw vs mirrored distribution, VRBL distribution comparison), simply **uncomment the function call** inside `main()` and re-run the script.  
+
+Run the project with:  
+```bash
+python simulator.py
+
 ---
