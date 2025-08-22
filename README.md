@@ -1,12 +1,10 @@
-# XNOR-SRAM: In-Memory Computing for Binary/Ternary Neural Networks
+# XNOR-SRAM Stability - Assessing and Improving Analog Consistency in IMC
 
-This project explores the **XNOR-SRAM architecture**, an **in-memory computing (IMC)** solution proposed for **binary and ternary neural networks (BNNs/TNNs)**. The architecture integrates **matrix–vector multiplication (MVM)** functionality directly within **SRAM bit-cells**, enabling efficient neural network inference while reducing data movement overhead.
 
----
-
-## 🔬 Project Goals
+## Project Goals
 - **Analyze physical design challenges** in XNOR-SRAM arrays:
   - Pull-Up / Pull-Down (PU/PD) resistance mismatch
+  - PU and PD resistance impacted by local random variations 
   - Spatial gradient variations across the memory array
 - **Evaluate the impact** of these variations on computational accuracy.
 - **Propose correction techniques** that:
@@ -16,7 +14,7 @@ This project explores the **XNOR-SRAM architecture**, an **in-memory computing (
 
 ---
 
-## ⚙️ Methods
+## Methods
 1. **Modeling SRAM-based IMC**
    - Simulated MVM operations under PU/PD mismatch and spatial gradients.  
    - Analyzed voltage reference bit-line (VRBL) distributions.  
