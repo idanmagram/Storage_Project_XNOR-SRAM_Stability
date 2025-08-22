@@ -20,10 +20,7 @@
    - Analyzed voltage reference bit-line (VRBL) distributions.  
 
 2. **Error Characterization**
-   - Compared raw vs balanced inputs.  
    - Evaluated correction techniques for restoring accuracy.  
-
-3. **Mitigation**
-   - Lightweight **post-processing corrections** that reduce error without redesigning the SRAM cells.  
+   - Lightweight post-processing corrections that reduce error without redesigning the SRAM cells.  
 
 ---
