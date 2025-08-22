@@ -23,4 +23,12 @@
    - Evaluated correction techniques for restoring accuracy.  
    - Lightweight post-processing corrections that reduce error without redesigning the SRAM cells.  
 
+## Required Libraries
+This project uses the following Python libraries:
+- **numpy**
+- **matplotlib**
+- **collections** (Python standard library)
+## How to run  
+The entry point of the project is the main() function defined in the analysis script.
+It sets up SPU/SPD parameters, runs VRBL simulations, and performs gradient sweeps.
 ---
